@@ -3,6 +3,8 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
+#include <queue>
 #include <stack>
 #include <cstdlib>
 #include <ctime>
@@ -13,12 +15,15 @@ void distinctNumber(void);
 void distinctString(void);
 void distinctList(void);
 void distinctMap(void);
+void distinctSet(void);
+void distinctQueue(void);
+void distinctStack(void);
 
 int main()
 {
     string invl;
 
-    cout << "Input[number|string|list|map]: ";
+    cout << "Input[number|string|list|map|set|queue|stack]: ";
     cin >> invl;
 
     if (invl == "number")
@@ -29,6 +34,12 @@ int main()
     {distinctList();}
     else if (invl == "map")
     {distinctMap();}
+    else if (invl == "set")
+    {distinctSet();}
+    else if (invl == "queue")
+    {distinctQueue();}
+    else if (invl == "stack")
+    {distinctStack();}
     else
     {
         cout << "Error: " << invl << endl;
@@ -259,15 +270,187 @@ void distinctMap(void)
             cout << vtmp << " : " << lstx << " : " << clm << endl;
             if (clm && (clm % 3 == 0))
             {innum.push("、");}
-            innum.push(knum[vtmp]);
+            if (knum[vtmp] != "")
+            {innum.push(knum[vtmp]);}
+            else
+            {
+                cout << "数値を入力してください" << endl;
+                break;
+            }
             clm++;
         }
-        cout << "Number: ";
-        while (!innum.empty())
+        if (lstx == 0)
         {
-            cout << innum.top();
-            innum.pop();
+            cout << "Number: ";
+            while (!innum.empty())
+            {
+                cout << innum.top();
+                innum.pop();
+            }
+            cout << endl;
         }
-        cout << endl;
     }
+
+    map <string, string> mstr2;
+    mstr2["r"] = "room     ";
+    mstr2["w"] = "wonderful";
+    mstr2["p"] = "pork     ";
+    mstr2["t"] = "trap     ";
+    mstr2["k"] = "kind     ";
+    mstr2["m"] = "money    ";
+    mstr2["d"] = "dog      ";
+    mstr2["g"] = "given    ";
+    mstr2["y"] = "yellow   ";
+    mstr2["e"] = "eat      ";
+    mstr2["a"] = "apple    ";
+    mstr2["n"] = "neighbor ";
+
+    string firstwd = "apple";
+    string lastchar;
+
+    cin.ignore();
+    cout << "First Word: ";
+    getline(cin, firstwd);
+
+    lastchar = firstwd.substr(firstwd.length()-1, 1);
+    while (mstr2[lastchar].length() != 0)
+    {
+        cout << mstr2[lastchar] << endl;
+        firstwd = mstr2[lastchar];
+        int lstx = firstwd.length();
+        lastchar = firstwd.substr(lstx-1, 1);
+        while (lastchar == " ")
+        {
+            lstx--;
+            lastchar = firstwd.substr(lstx-1, 1);
+        }
+    }
+}
+
+void distinctSet(void)
+{
+    set <int> snum;
+    int invl;
+
+    srand((unsigned int)time(NULL));
+    cout << "Obtained Number:";
+    for (int ix=0; ix<10; ix++)
+    {
+        invl = rand() % 10;
+        cout << " " << invl;
+        snum.insert(invl);
+    }
+    cout << endl;
+    set <int> ::iterator it;
+    cout << "Distinct Number:";
+    for (it = snum.begin(); it != snum.end(); it++)
+    {
+        int vtmp = *it;
+        cout << " " << vtmp;
+    }
+    cout << endl;
+
+    set <string> sstr;
+    string sval;
+
+    cout << "Please input sentence:";
+    bool escape = false;
+    cin >> sval;
+    while (sval != "")
+    {
+        for (int ix=0; ix<sval.length(); ix++)
+        {
+            string vtmp = sval.substr(ix, 1);
+            if (vtmp != "\\")
+            {
+                //cout << " " << vtmp;
+                sstr.insert(vtmp);
+            }
+            else
+            {
+                cout << "Distinct Character:";
+                set <string> ::iterator it2;
+                for (it2 = sstr.begin(); it2 != sstr.end(); it2++)
+                {
+                    string vtmp = *it2;
+                    cout << " " << vtmp;
+                }
+                cout << endl;
+                escape = true;
+                break;
+            }
+        }
+        if (escape)
+        {break;}
+
+        cin >> sval;
+    }
+}
+
+void distinctQueue(void)
+{
+    string sval;
+    queue <string> qstr;
+
+    cin.ignore();
+
+    cout << "1:Please input words:";
+    getline(cin,sval);
+    while (sval != "")
+    {
+        //cout << sval;
+        //cout << endl;
+        qstr.push(sval);
+        cout << "1:Please input words:";
+        getline(cin,sval);
+    }
+    cout << "Output words:";
+    while (!qstr.empty())
+    {
+        cout << " " << qstr.front();
+        qstr.pop();
+    }
+    cout << endl;
+
+}
+
+void distinctStack(void)
+{
+    string sval;
+    stack <string> qstr;
+
+    cin.ignore();
+
+    cout << "1:Please input words:";
+    getline(cin,sval);
+    while (sval != "")
+    {
+        cout << sval;
+        cout << endl;
+        qstr.push(sval);
+        cout << "1:Please input words:";
+        getline(cin,sval);
+    }
+    cout << "Output words:";
+    while (!qstr.empty())
+    {
+        cout << " " << qstr.top();
+        qstr.pop();
+    }
+    cout << endl;
+
+    cout << "2:Please input words:";
+    getline(cin,sval);
+    for (int ix=0; ix<sval.length(); ix++)
+    {
+        string vtmp = sval.substr(ix, 1);
+        qstr.push(vtmp);
+    }
+    cout << "Output words reverse:";
+    while (!qstr.empty())
+    {
+        cout << qstr.top();
+        qstr.pop();
+    }
+    cout << endl;
 }
