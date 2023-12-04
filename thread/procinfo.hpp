@@ -9,9 +9,14 @@ class Processinfo {
     public:
         int start_cnt;
         int num_cnt;
-        int8_t* srcdata;
-        int8_t* dstdata;
+        int procmode;
+        uint8_t* srcdata;
+        uint8_t* dstdata;
+        uint8_t* rsltdata;
+        uint8_t* rslt2data;
 
-        Processinfo(int start, int num);
+        Processinfo(int start, int num, int mode);
         ~Processinfo();
+
+        bool cmprslt();
 };
